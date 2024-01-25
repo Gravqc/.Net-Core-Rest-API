@@ -1,4 +1,4 @@
-namespace Commander.Modles
+namespace Commander.Models
 {
   public class Command
   {

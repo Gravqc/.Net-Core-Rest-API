@@ -7,7 +7,7 @@ namespace Commander.Data
   {
     // Give me a list of all command objects
     // In the interface we just define the operations/methods available via the interface
-    IEnumerable<Command> GetAppCommands();
+    IEnumerable<Command> GetAllCommands();
     Command GetCommanById(int id);
   }
 }

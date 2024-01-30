@@ -4,7 +4,16 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- 
+    Setting InvariantGlobalization to false to ensure support for globalization features in the application.
+    When set to true, it enables globalization-invariant mode which restricts the application to use only 
+    the invariant culture, and this can lead to issues with culture-specific operations. This setting is 
+    particularly important for applications that need to handle different cultures and regional settings, 
+    such as date/time formats, number formats, etc. Setting it to false ensures that the application 
+    supports the full set of .NET globalization features, including culture-specific formatting and operations.
+    (Took me 1hr to figure out what was wrong my god)
+    -->
+    <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>

@@ -28,7 +28,7 @@ namespace Commander.Controllers
     public ActionResult<IEnumerable<Command>> GetAllCommands() // IEnumerable<> can be thought of as a list/collection of objects
     {
       // Retrieves all command items from the repository.
-      var CommandItems = _repository.GetAppCommands(); // 'var' is used because the type is determined by the return value of GetAppCommands()
+      var CommandItems = _repository.GetAllCommands(); // 'var' is used because the type is determined by the return value of GetAppCommands()
 
       // Returns an 'Ok' response (200 status code) along with the retrieved command items.
       return Ok(CommandItems);

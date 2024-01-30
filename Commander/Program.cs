@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 // Register your repository for dependency injection
 builder.Services.AddScoped<ICommanderRepo, MockCommanderRepo>(); // Replace MockCommanderRepo with the actual implementation if needed
 
+// NOTE: When we register the dbcontext in this way asp.entcore is resposible for creating instances of our dbcontext, it automatically will figure out how to create dbcontextoptoions<commandercontext>, and this instance is automatically passed to the constructor of our commandercontext which is instantiated by the DI system.
 // Registers the CommanderContext with the ASP.NET Core dependency injection system.
 // Configures the context to use SQL Server as the database provider.
 builder.Services.AddDbContext<CommanderContext>(opt => 
@@ -23,7 +24,8 @@ builder.Services.AddControllers();
 
 // Registers ICommanderRepo and its implementation MockCommanderRepo with the dependency injection system.
 // Each time an ICommanderRepo is requested, a new instance of MockCommanderRepo will be provided within the scope of a single request.
-builder.Services.AddScoped<ICommanderRepo, MockCommanderRepo>();
+//builder.Services.AddScoped<ICommanderRepo, MockCommanderRepo>();
+builder.Services.AddScoped<ICommanderRepo, SqlCommanderRepo>();
 
 var app = builder.Build();
 

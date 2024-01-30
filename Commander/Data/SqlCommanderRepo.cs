@@ -2,21 +2,43 @@ using Commander.Models;
 
 namespace Commander.Data
 {
+    // Repository for Command entities using Entity Framework Core.
     public class SqlCommanderRepo : ICommanderRepo
     {
-      private readonly CommanderContext _context;
-      public SqlCommanderRepo(CommanderContext conetxt)
-      {
-        _context = conetxt;
-      }
-        public IEnumerable<Command> GetAllCommands()
+        // Database context for data operations, injected via DI.
+        private readonly CommanderContext _context;
+
+        // Constructor for dependency injection of database context.
+        public SqlCommanderRepo(CommanderContext context)
         {
-          return _context.Commands.ToList();
+            _context = context;
         }
 
-        public Command GetCommanById(int id)
+        public void CreateCommand(Command cmd)
         {
-          return _context.Commands.FirstOrDefault(p => p.Id == id);
+            if (cmd == null)
+            {
+                throw new ArgumentNullException(nameof(cmd));
+            }
+
+            _context.Commands.Add(cmd);
+        }
+
+        // Retrieves all Command entities from the database.
+        public IEnumerable<Command> GetAllCommands()
+        {
+            return _context.Commands.ToList();
+        }
+
+        // Retrieves a Command entity by its ID.
+        public Command GetCommandById(int id)
+        {
+            return _context.Commands.FirstOrDefault(p => p.Id == id);
+        }
+
+        public bool SaveChanges()
+        {
+            return (_context.SaveChanges() >= 0);
         }
     }
 }

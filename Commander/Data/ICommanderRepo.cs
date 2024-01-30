@@ -1,5 +1,5 @@
 // THis is the interface: A list of methods we are providing the end user
-using Commander.Modles;
+using Commander.Models;
 
 namespace Commander.Data
 {

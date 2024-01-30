@@ -1,10 +1,29 @@
-// Entry point for application
+using Commander.Data; // Ensure you have using statements for your namespaces
+using Commander.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Register your repository for dependency injection
+builder.Services.AddScoped<ICommanderRepo, MockCommanderRepo>(); // Replace MockCommanderRepo with the actual implementation if needed
+
+// Registers the CommanderContext with the ASP.NET Core dependency injection system.
+// Configures the context to use SQL Server as the database provider.
+builder.Services.AddDbContext<CommanderContext>(opt => 
+opt.UseSqlServer( // Retrieves the database connection string named "CommanderConnection" from the application's configuration.& connectionstring is in appsettings.json
+    builder.Configuration.GetConnectionString("CommanderConnection")));
+
+// Add services for controllers (This is important for using controllers)
+builder.Services.AddControllers();
+
+// Registers ICommanderRepo and its implementation MockCommanderRepo with the dependency injection system.
+// Each time an ICommanderRepo is requested, a new instance of MockCommanderRepo will be provided within the scope of a single request.
+builder.Services.AddScoped<ICommanderRepo, MockCommanderRepo>();
 
 var app = builder.Build();
 
@@ -17,29 +36,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Enable routing and use controllers (This is crucial for your API endpoints to work)
+app.UseRouting();
 
-app.MapGet("/weatherforecast", () =>
+app.UseAuthorization(); // Add this if you have [Authorize] attributes or plan to use authentication/authorization
+
+app.UseEndpoints(endpoints =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    endpoints.MapControllers(); // Maps controllers to their respective routes
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

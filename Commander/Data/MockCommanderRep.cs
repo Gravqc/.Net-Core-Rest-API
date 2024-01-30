@@ -1,4 +1,4 @@
-using Commander.Modles;
+using Commander.Models;
 
 namespace Commander.Data
 {

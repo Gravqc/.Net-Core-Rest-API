@@ -3,6 +3,7 @@ using Commander.Data;
 using Commander.Dtos;
 using Commander.Models;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 //Decoupling: We use this controller to access the repository's implemented class. Then that class accesses the database.
 
@@ -30,6 +31,8 @@ namespace Commander.Controllers
       _mapper = mapper;
     }
 
+    // desc of the opration on swaggerui
+    [SwaggerOperation(Summary ="Get all the commands")]
     // GET: api/commands - Retrieves all commands.
     [HttpGet]
     //create first action result endpoint
@@ -40,6 +43,7 @@ namespace Commander.Controllers
       return Ok(_mapper.Map<IEnumerable<CommandReadDtos>>(commandItems));
     }
 
+    [SwaggerOperation(Summary ="Get the Command by the given Id ")]  
     //putting {id} gives us a route to this action result, respond to: "GET api/commands/5"
     [HttpGet("{id}", Name = "GetCommandById")] //since this one and above both respond to GET (same verb), their URI must be differentiated
     public ActionResult<CommandReadDtos> GetCommandById(int id) // This 'id' comes from the request we pass via the URL using PostMan.
@@ -55,6 +59,8 @@ namespace Commander.Controllers
         return NotFound();
       }
     }
+
+    [SwaggerOperation(Summary ="Create a new Command, by passing 3 different attributes, 'How To' is the Command description, 'Line' is the cli code, 'PlatForm' is the application platform")]
     //POST api/commands
     [HttpPost]
     public ActionResult<CommandReadDtos> CreateCommand(CommandCreateDtos commandCreateDto)
@@ -72,6 +78,7 @@ namespace Commander.Controllers
       //return Ok(commandReadDto);  --> returns 200
     }
 
+    [SwaggerOperation(Summary ="Replace the command of the given Id with a new command specified by you")]
     //PUT api/commands/{id}
     //Since we only return http 204, return type = ActionResult
     [HttpPut("{id}")]
@@ -95,6 +102,7 @@ namespace Commander.Controllers
       return NoContent();
     }
 
+    [SwaggerOperation(Summary ="Delete a command")]
     //DELETE api/commands/{id}
     [HttpDelete("{id}")]
     public ActionResult DeleteCommand(int id)

@@ -2,6 +2,7 @@ using Commander.Data;
 using Commander.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,13 +26,24 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Enable controllers in the application.
 builder.Services.AddControllers();
 
+//add swaggergenerator to the services collection
+builder.Services.AddSwaggerGen(c =>
+            {   
+                c.EnableAnnotations();
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Gaurav's Commander API", Version = "v1" });
+            });
+
 var app = builder.Build();
 
 // Swagger setup for development environment.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.RoutePrefix = "";
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Commands API v1");
+    });
 }
 
 // Middleware for HTTPS redirection and routing.

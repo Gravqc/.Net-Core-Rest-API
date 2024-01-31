@@ -10,11 +10,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Dependency injection setup for ICommanderRepo and CommanderContext.
+//Registering service container: whenever ICommanderRepo is asked, give SqlCommanderRepo
+//to change implementation, all you have to do is change second parameter!
 builder.Services.AddScoped<ICommanderRepo, SqlCommanderRepo>(); // Use SqlCommanderRepo for real implementation.
-builder.Services.AddDbContext<CommanderContext>(opt => 
+
+//Configure our DB context class for use within rest of app; dependency injection support, adds dbcontext to service container
+builder.Services.AddDbContext<CommanderContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("CommanderConnection"))); // SQL Server configuration.
 
 // Registers AutoMapper for object-to-object mapping, scanning for profiles in all assemblies.
+//makes automapper available through dependency injection to the rest of our app (for DTOs)
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Enable controllers in the application.

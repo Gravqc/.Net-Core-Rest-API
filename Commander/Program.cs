@@ -48,13 +48,14 @@ if (app.Environment.IsDevelopment())
 
 // Middleware for HTTPS redirection and routing.
 app.UseHttpsRedirection();
-app.UseRouting();
+//app.UseRouting();
 app.UseAuthorization(); // Enable if using authentication/authorization.
 
 // Configure API endpoints.
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers(); // Map controller actions to routes.
-});
+// app.UseEndpoints(endpoints =>
+// {
+//     endpoints.MapControllers(); // Map controller actions to routes.
+// });
+app.MapControllers();
 
 app.Run(); // Start the application.

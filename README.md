@@ -40,7 +40,7 @@ In building this project, I employed several essential development practices and
 <img width="784" alt="image" src="https://github.com/Gravqc/.Net-Core-Rest-API/assets/90492971/c7ad9dba-9fa4-4974-87c1-09fb81e17c36">
 
 ## To Do:
-### Docker Integration
+### Docker Integration(DONE)
 - Containerization: Describes how the API is containerized using Docker, including the creation of a Dockerfile.
 - Image Creation: Details on building Docker images for the API.
 - Deployment on Docker Hub: Instructions for pushing the Docker image to Docker Hub for distribution.
